@@ -1,33 +1,41 @@
-# WAIQ_Portal
+# WAIQ_Knuckle
 
-**W**eb **A**pplication **I**nterview **Q**uestions Portal
+**W**eb **A**pplication **I**nterview **Q**uestions Portal — “Hack the Planet” training edition.
 
-A vulnerable web application designed to train application security engineers through hands-on practice with common web vulnerabilities.
+Deliberately vulnerable web app for practicing AppSec interview-style vulns.
 
 ## ⚠️ WARNING
+This app is intentionally vulnerable. See [SECURITY.md](SECURITY.md). Do **not** use real creds or expose to the internet.
 
-**This application is intentionally vulnerable. See [SECURITY.md](SECURITY.md) for important security information.**
+## Stack
+- Python (Flask), SQLite
+- (Optional later) Go sidecar for extra vuln demos
+- Simple server-rendered Jinja templates
 
-## Purpose
+## Current branches
+- `main` (release), `dev` (staging), `build` (active work)
 
-This application contains 91+ vulnerability modules based on common AppSec interview questions, allowing security engineers to:
-- Practice identifying vulnerabilities
-- Understand exploitation techniques
-- Learn remediation strategies
-- Prepare for AppSec interviews
+## Quickstart (local, dev only)
+```bash
+cd WAIQ_Knuckle
+python -m venv venv && source venv/bin/activate   # or venv\\Scripts\\activate on Windows
+pip install -r requirements.txt
+python app/app.py
+# browse http://localhost:5000
+```
 
-## Status
+## Seeded creds / data (intentionally weak)
+- Users: `admin/admin123`, `alice/password`, `zer0_c00l/hacktheplanet`, `acidburn/crashoverride`
+- Guestbook has stored XSS samples (“Hack the Planet” refs)
 
-🚧 **Under Development** 🚧
+## Implemented modules (mapped from AppSec_Questions_Modules_Ideas)
+- XSS Guestbook (reflected/stored) — Q4, Q8, Q19, Q41, Q44, Q65
+- SQLi Login (string-built query) — Q5, Q28, Q50, Q64
+- IDOR Profile Viewer — Q10, Q31
+- Coming soon: File Upload (no validation), CSRF (no token)
 
-## Installation
-
-(To be added)
-
-## Usage
-
-(To be added)
-
-## Modules
-
-(To be added - will list all vulnerability modules)
+## Roadmap
+- Add more modules from the 91-question guide (Upload, CSRF, SSTI, SSRF, Open Redirect, etc.)
+- Add optional Go service for SSRF/IDOR demos
+- Add CI (pytest + bandit; go test + gosec)
+- Add a simple module “shop” UI and lab instructions per module

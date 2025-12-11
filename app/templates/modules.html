@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Modules</h2>
+  <p>Choose a module and “hack the planet” in a contained lab.</p>
+  <ul>
+    {% for m in modules %}
+      <li>
+        <strong><a href="{{ url_for('module_detail', slug=m.slug) }}">{{ m.title }}</a></strong>
+        <div>{{ m.description }}</div>
+        <div><small>Type: {{ m.type }} | Questions: {{ m.questions|join(', ') }}</small></div>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+

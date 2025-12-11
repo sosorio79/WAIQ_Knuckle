@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>{{ module.title }}</h2>
+  <p>{{ module.description }}</p>
+  <p><small>Type: {{ module.type }} | Questions: {{ module.questions|join(', ') }}</small></p>
+
+  {% if module.slug == "xss-guestbook" %}
+    <h3>Guestbook (XSS)</h3>
+    <form method="post">
+      <label>Author <input name="author" placeholder="zer0_c00l"></label>
+      <label>Message <textarea name="content" placeholder="<script>alert('pwn')</script>"></textarea></label>
+      <button type="submit">Post (unsanitized)</button>
+    </form>
+    <h4>Messages (rendered unsanitized)</h4>
+    <ul>
+      {% for msg in messages %}
+        <li><strong>{{ msg.author }}</strong>: {{ msg.content|safe }}</li>
+      {% endfor %}
+    </ul>
+  {% elif module.slug == "sqli-login" %}
+    <h3>SQLi Login</h3>
+    <form method="post">
+      <label>Username <input name="username" placeholder="admin"></label>
+      <label>Password <input name="password" placeholder="' OR 1=1 --"></label>
+      <button type="submit">Login (vulnerable)</button>
+    </form>
+    {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+  {% elif module.slug == "idor-profile" %}
+    <h3>IDOR Profile Viewer</h3>
+    <form method="get">
+      <label>Profile ID <input name="id" value="{{ target_id }}"></label>
+      <button type="submit">View</button>
+    </form>
+    {% if record %}
+      <p><strong>ID:</strong> {{ record.id }}<br>
+         <strong>Username:</strong> {{ record.username }}<br>
+         <strong>Password:</strong> {{ record.password }}</p>
+    {% else %}
+      <p>No record found.</p>
+    {% endif %}
+  {% else %}
+    <p>This module is coming soon.</p>
+  {% endif %}
+{% endblock %}
+
