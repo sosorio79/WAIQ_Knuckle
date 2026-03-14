@@ -25,6 +25,14 @@
       <button type="submit">Login (vulnerable)</button>
     </form>
     {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+  {% elif module.slug == "ssrf-proxy" %}
+    <h3>SSRF Proxy (TypeScript → Python → Go)</h3>
+    <p><small>Uses a Go sidecar service that fetches arbitrary URLs. No URL validation.</small></p>
+    <form id="ssrf-proxy-form">
+      <label>URL to fetch <input id="ssrf-url" name="url" type="text" placeholder="http://localhost:5000" style="width:400px"></label>
+      <button type="submit">Fetch (vulnerable)</button>
+    </form>
+    <pre id="ssrf-result" class="ssrf-result" style="margin-top:1em; white-space:pre-wrap; max-height:300px; overflow:auto"></pre>
   {% elif module.slug == "idor-profile" %}
     <h3>IDOR Profile Viewer</h3>
     <form method="get">
@@ -39,7 +47,10 @@
       <p>No record found.</p>
     {% endif %}
   {% else %}
-    <p>This module is coming soon.</p>
+    <div class="module-reference">
+      <p><strong>Reference module.</strong> Study the questions above and use the <a href="{{ url_for('list_modules') }}">Modules</a> list to explore related interactive labs.</p>
+      <p>Questions covered: {{ module.questions|join(', ') }}</p>
+    </div>
   {% endif %}
 {% endblock %}
 

@@ -1,0 +1,255 @@
+/* WAIQ Knuckle — Fallout Terminal theme */
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+
+:root {
+  /* Phosphor CRT palette */
+  --ft-bg: #0a0c0a;
+  --ft-bg-card: #0d100d;
+  --ft-bg-elevated: #111411;
+  --ft-border: rgba(57, 255, 20, 0.4);
+  --ft-border-dim: rgba(57, 255, 20, 0.15);
+  --ft-phosphor: #39ff14;
+  --ft-amber: #ffb000;
+  --ft-text: #33ee33;
+  --ft-text-dim: #228b22;
+  --ft-text-muted: #1a5c1a;
+  --ft-font: 'VT323', 'Share Tech Mono', monospace;
+}
+
+/* Override simple.css — use full display width, not narrow reading column */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+body {
+  display: block;
+  grid-template-columns: unset;
+  background:
+    /* Phosphor grid */
+    linear-gradient(90deg, rgba(57, 255, 20, 0.04) 1px, transparent 1px),
+    linear-gradient(rgba(57, 255, 20, 0.04) 1px, transparent 1px),
+    /* Dark base */
+    linear-gradient(180deg, #0a0c0a 0%, #060908 50%, #0a0c0a 100%) !important;
+  background-size: 80px 80px, 80px 80px, 100% 100%;
+  background-position: 0 0, 0 0, 0 0;
+  color: var(--ft-text) !important;
+  font-family: var(--ft-font) !important;
+  line-height: 1.5;
+  font-size: 1.1rem;
+  min-height: 100vh;
+}
+
+/* Scanlines overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Subtle vignette */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+  z-index: 9998;
+}
+
+header {
+  background: var(--ft-bg-card) !important;
+  border-bottom: 2px solid var(--ft-border) !important;
+  padding: 1rem 2rem !important;
+  position: relative;
+  z-index: 1;
+}
+
+header h1 {
+  font-family: var(--ft-font) !important;
+  font-weight: 400 !important;
+  font-size: 2.2rem !important;
+  color: var(--ft-phosphor) !important;
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+  letter-spacing: 0.15em;
+}
+
+header p {
+  color: var(--ft-text-dim) !important;
+  font-style: normal !important;
+  font-size: 1.2rem !important;
+}
+
+header nav a {
+  color: var(--ft-text-dim) !important;
+  text-decoration: none !important;
+  padding: 0.3rem 0.6rem !important;
+  border: 1px solid var(--ft-border-dim);
+  font-size: 1.1rem !important;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem !important;
+}
+
+header nav a:hover {
+  color: var(--ft-phosphor) !important;
+  border-color: var(--ft-phosphor);
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+}
+
+main {
+  padding: 1rem 1.5rem !important;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+main h2 {
+  font-family: var(--ft-font) !important;
+  font-size: 1.8rem !important;
+  font-weight: 400 !important;
+  color: var(--ft-phosphor) !important;
+  margin-bottom: 1rem !important;
+  letter-spacing: 0.1em;
+}
+
+main h3 {
+  font-family: var(--ft-font) !important;
+  font-size: 1.5rem !important;
+  color: var(--ft-text) !important;
+  font-weight: 400 !important;
+}
+
+main p {
+  color: var(--ft-text-dim) !important;
+  margin-bottom: 1rem !important;
+  font-size: 1.15rem !important;
+}
+
+main a {
+  color: var(--ft-phosphor) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid var(--ft-border-dim);
+  transition: all 0.2s ease;
+}
+
+main a:hover {
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+  border-bottom-color: var(--ft-phosphor);
+}
+
+a.cta {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 2px solid var(--ft-phosphor);
+  color: var(--ft-phosphor) !important;
+  font-size: 1.2rem !important;
+  transition: all 0.2s ease;
+}
+
+a.cta:hover {
+  background: rgba(57, 255, 20, 0.08);
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+}
+
+footer {
+  border-top: 1px solid var(--ft-border-dim) !important;
+  padding: 1rem 2rem !important;
+  color: var(--ft-text-muted) !important;
+  font-size: 1rem !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Forms */
+label {
+  color: var(--ft-text-dim) !important;
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem !important;
+}
+
+input, textarea, select, button {
+  font-family: var(--ft-font) !important;
+  font-size: 1.1rem !important;
+  background: var(--ft-bg-elevated) !important;
+  border: 1px solid var(--ft-border-dim) !important;
+  color: var(--ft-phosphor) !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+input:focus, textarea:focus {
+  outline: none !important;
+  border-color: var(--ft-phosphor) !important;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.3) !important;
+}
+
+button, input[type="submit"], input[type="button"] {
+  background: transparent !important;
+  border: 2px solid var(--ft-phosphor) !important;
+  color: var(--ft-phosphor) !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover, input[type="submit"]:hover {
+  background: rgba(57, 255, 20, 0.1) !important;
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+}
+
+input[type="file"] {
+  border-style: dashed !important;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--ft-phosphor);
+}
+
+/* Lists & flash messages */
+ul {
+  border: none !important;
+}
+
+main ul li {
+  color: var(--ft-text-dim) !important;
+  margin-bottom: 0.5rem !important;
+  font-size: 1.1rem !important;
+}
+
+main ul li strong {
+  color: var(--ft-amber) !important;
+}
+
+/* Code & pre */
+code, pre {
+  font-family: var(--ft-font) !important;
+  background: var(--ft-bg-elevated) !important;
+  color: var(--ft-phosphor) !important;
+  border: 1px solid var(--ft-border-dim) !important;
+  font-size: 1.1rem !important;
+}
+
+pre {
+  padding: 1rem !important;
+  overflow-x: auto !important;
+}

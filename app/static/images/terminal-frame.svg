@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450">
+  <defs>
+    <linearGradient id="bezel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a"/>
+      <stop offset="50%" style="stop-color:#2d2d2d"/>
+      <stop offset="100%" style="stop-color:#1a1a1a"/>
+    </linearGradient>
+    <filter id="screen-glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Outer bezel -->
+  <rect x="0" y="0" width="600" height="450" rx="12" ry="12" fill="url(#bezel)"/>
+  <!-- Inner bezel -->
+  <rect x="20" y="20" width="560" height="380" rx="6" ry="6" fill="#0d0d0d"/>
+  <!-- Screen area (content goes here) -->
+  <rect x="35" y="35" width="530" height="350" rx="4" ry="4" fill="#0a0c0a" stroke="#39ff14" stroke-width="1" opacity="0.6"/>
+  <!-- CRT curve highlight top -->
+  <rect x="35" y="35" width="530" height="20" rx="4" fill="none" stroke="#39ff14" stroke-width="0.5" opacity="0.2"/>
+</svg>

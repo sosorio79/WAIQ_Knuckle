@@ -1,0 +1,12 @@
+{
+  "name": "waiq-knuckle",
+  "version": "1.0.0",
+  "description": "WAIQ Knuckle - Web App Interview Questions training app (Python + TypeScript + Go)",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}

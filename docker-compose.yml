@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  waiq:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: waiq-knuckle
+    ports:
+      - "${APP_PORT:-5000}:${APP_PORT:-5000}"
+    volumes:
+      - waiq_data:/app/data
+    environment:
+      - APP_SECRET_KEY=${APP_SECRET_KEY:-insecure-training-key}
+      - APP_DB_PATH=/app/data/app.db
+      - APP_PORT=${APP_PORT:-5000}
+      - GO_PROXY_HOST=go-proxy
+      - GO_PROXY_PORT=9000
+      - FLASK_DEBUG=0
+    networks:
+      - waiq-net
+
+  go-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile.go
+    container_name: waiq-go-proxy
+    ports:
+      - "9000:9000"
+    environment:
+      - GO_PROXY_PORT=9000
+    networks:
+      - waiq-net
+
+networks:
+  waiq-net:
+    driver: bridge
+
+volumes:
+  waiq_data:

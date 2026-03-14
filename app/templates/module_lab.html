@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lab.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/terminal.css') }}">
+{% endblock %}
+{% block content %}
+<div class="lab-container">
+  <section class="lab-instructions">
+    <img src="{{ url_for('static', filename='images/modules/' ~ module.slug ~ '.svg') }}" alt="" class="lab-module-icon">
+    <h2>{{ module.title }}</h2>
+    <p class="lab-objective"><strong>Objective:</strong> {{ lab.objective }}</p>
+
+    <h3>Steps</h3>
+    <ol class="lab-steps">
+      {% for step in lab.steps %}
+      <li data-step="{{ loop.index }}">{{ step }}</li>
+      {% endfor %}
+    </ol>
+
+    <details class="lab-hints">
+      <summary><span class="lab-block-label">Hints</span> <span class="lab-block-desc">— try yourself first</span></summary>
+      <div class="hint-content">
+        <ol>
+          {% for hint in lab.hints %}
+          <li>{{ hint }}</li>
+          {% endfor %}
+        </ol>
+      </div>
+    </details>
+
+    <details class="lab-solution">
+      <summary><span class="lab-block-label">Solution</span> <span class="lab-block-desc">— full walkthrough</span></summary>
+      <div class="solution-content">{{ lab.solution }}</div>
+    </details>
+  </section>
+
+  <section class="lab-terminal-section">
+    <div class="lab-iframe-wrap">
+      <div class="terminal-window">
+        <div class="terminal-title-bar">WAIQ_TERMINAL // {{ module.title }}</div>
+        <div class="lab-app-panel terminal-screen">
+          <div class="terminal-prompt">root@waiq:~$ ./run_lab --module={{ module.slug }}</div>
+          <iframe class="lab-iframe" src="{{ url_for('module_frame', slug=module.slug) }}" title="{{ module.title }}"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,209 @@
+{% if module.slug == "xss-guestbook" %}
+  <form method="post">
+    <label>Author <input name="author" placeholder="zer0_c00l"></label>
+    <label>Message <textarea name="content" placeholder="<script>alert(1)</script>" rows="3"></textarea></label>
+    <button type="submit">Post (unsanitized)</button>
+  </form>
+  <h4 style="margin-top:1rem">Messages (rendered unsanitized)</h4>
+  <ul>
+    {% for msg in messages %}
+    <li><strong>{{ msg.author }}</strong>: {{ msg.content|safe }}</li>
+    {% endfor %}
+  </ul>
+{% elif module.slug == "sqli-login" %}
+  <form method="post">
+    <label>Username <input name="username" placeholder="admin"></label>
+    <label>Password <input name="password" placeholder="' OR 1=1 --"></label>
+    <button type="submit">Login (vulnerable)</button>
+  </form>
+  {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+{% elif module.slug == "idor-profile" %}
+  <form method="get">
+    <label>Profile ID <input name="id" value="{{ target_id }}" type="number"></label>
+    <button type="submit">View</button>
+  </form>
+  {% if record %}
+  <p><strong>ID:</strong> {{ record.id }}<br>
+     <strong>Username:</strong> {{ record.username }}<br>
+     <strong>Password:</strong> {{ record.password }}</p>
+  {% else %}
+  <p>No record found.</p>
+  {% endif %}
+{% elif module.slug == "ssrf-proxy" %}
+  <form id="ssrf-proxy-form">
+    <label>URL to fetch <input id="ssrf-url" name="url" type="text" placeholder="http://localhost:5000" style="width:100%"></label>
+    <button type="submit">Fetch (vulnerable)</button>
+  </form>
+  <pre id="ssrf-result" class="ssrf-result" style="margin-top:1em; white-space:pre-wrap; max-height:300px; overflow:auto; background:#f8f8f8; padding:0.75rem"></pre>
+{% elif module.slug == "csrf-no-token" %}
+  <p>This lab demonstrates CSRF concepts. The guestbook and login forms on other modules have no CSRF tokens. A malicious site could auto-submit forms to change state for a logged-in victim.</p>
+  <p><a href="{{ url_for('module_frame', slug='xss-guestbook') }}">Open XSS Guestbook</a> — its POST form has no CSRF protection.</p>
+{% elif module.slug == "open-redirect" %}
+  <p>Simulated login page. After &quot;login&quot;, you are redirected to the <code>redirect</code> URL. No validation.</p>
+  <form method="post">
+    <label>Redirect after login <input name="redirect" value="{{ redirect_preview }}" placeholder="/" style="width:100%"></label>
+    <label>Username <input name="user" placeholder="victim"></label>
+    <label>Password <input name="pass" type="password" placeholder="***"></label>
+    <button type="submit">Login (redirects to target)</button>
+  </form>
+  <p>Try <code>https://example.com</code>, <code>//evil.com</code>, or visit with <code>?redirect=https://example.com</code> first.</p>
+{% elif module.slug == "ssti" %}
+  <form method="post">
+    <label>Enter template expression <input name="template" placeholder="{{ '{{' }} 7*7 {{ '}}' }}" style="width:100%"></label>
+    <button type="submit">Render (vulnerable)</button>
+  </form>
+  {% if ssti_result is defined and ssti_result %}
+  <p><strong>Result:</strong></p>
+  <pre style="background:#f8f8f8; padding:0.5rem; margin-top:0.5rem">{{ ssti_result }}</pre>
+  {% endif %}
+  <p>Try <code>{{ '{{' }} 7*7 {{ '}}' }}</code> or <code>{{ '{{' }} config {{ '}}' }}</code> to test SSTI.</p>
+{% elif module.slug == "upload-no-validation" %}
+  <p>Mock file upload. No extension or content validation.</p>
+  <form method="post" enctype="multipart/form-data">
+    <label>Choose file <input name="file" type="file"></label>
+    <button type="submit">Upload (no validation)</button>
+  </form>
+{% elif module.slug == "session-management" %}
+  <p>Mock login. Session ID in cookie. Visit with <code>?sessid=attacker_token</code> to simulate fixation.</p>
+  <p><strong>Current session ID:</strong> <code>{{ sessid }}</code></p>
+  <form method="get">
+    <label>Set session ID <input name="sessid" value="{{ sessid }}" placeholder="attacker_token"></label>
+    <button type="submit">Fixate</button>
+  </form>
+{% elif module.slug == "jwt-auth" %}
+  <p>Mock JWT. Try modifying the payload to add <code>"admin": true</code>.</p>
+  <p><strong>Token:</strong> <code>{{ jwt_token }}</code></p>
+  <form method="post">
+    <label>Payload (JSON) <input name="payload" value="{{ jwt_payload }}" style="width:100%"></label>
+    <button type="submit">Submit modified payload</button>
+  </form>
+  {% if jwt_result %}<p style="color:green">{{ jwt_result }}</p>{% endif %}
+{% elif module.slug == "encoding-crypto" %}
+  <p>Base64 and MD5 (weak hash) — encoding is not encryption.</p>
+  <form method="post">
+    <label>Value <input name="value" placeholder="secret"></label>
+    <button name="action" value="encode" type="submit">Base64 encode</button>
+    <button name="action" value="decode" type="submit">Base64 decode</button>
+    <button name="action" value="hash" type="submit">MD5 hash</button>
+    <label>Verify hash <input name="hash"><button name="action" value="verify" type="submit">Verify</button></label>
+  </form>
+  {% if enc_result %}<pre style="background:#f8f8f8; padding:0.5rem">{{ enc_result }}</pre>{% endif %}
+{% elif module.slug == "hpp-waf" %}
+  <p>Server uses the <strong>last</strong> value. Try <code>?id=1&amp;id=2</code> or <code>?id=1&amp;id=2' OR 1=1--</code></p>
+  <form method="get">
+    <label>ID 1 <input name="id" value="1"></label>
+    <label>ID 2 <input name="id" value="2"></label>
+    <button type="submit">Submit</button>
+  </form>
+  {% if hpp_chosen is defined %}<p><strong>Server used:</strong> {{ hpp_chosen }} (all received: {{ hpp_all }})</p>{% endif %}
+{% elif module.slug == "command-injection" %}
+  <p>Ping utility. Input is concatenated into the command.</p>
+  <form method="post">
+    <label>Host <input name="host" value="127.0.0.1" placeholder="127.0.0.1"></label>
+    <button type="submit">Ping</button>
+  </form>
+  {% if cmd_result %}<pre style="background:#f8f8f8; padding:0.5rem">{{ cmd_result }}</pre>{% endif %}
+{% elif module.slug == "api-security" %}
+  <p>Mock API. Add <code>isAdmin: true</code> (mass assignment) — check the box or add via devtools.</p>
+  <form method="post">
+    <label>Username <input name="username" value="guest"></label>
+    <label><input name="isAdmin" type="checkbox" value="true"> isAdmin (attacker adds this)</label>
+    <button type="submit">Register</button>
+  </form>
+  {% if api_result %}<pre style="background:#f8f8f8; padding:0.5rem">{{ api_result|tojson }}</pre>{% endif %}
+{% elif module.slug == "xxe" %}
+  <p>XML parser. Try external entities or parameter entities.</p>
+  <form method="post">
+    <label>XML <textarea name="xml" rows="6" placeholder='&lt;?xml version="1.0"?&gt;&lt;data&gt;test&lt;/data&gt;' style="width:100%"></textarea></label>
+    <button type="submit">Parse</button>
+  </form>
+  {% if xxe_result %}<pre style="background:#f8f8f8; padding:0.5rem">{{ xxe_result }}</pre>{% endif %}
+{% elif module.slug == "information-disclosure" %}
+  <p>Mock debug/info page. Sensitive data exposed.</p>
+  <pre style="background:#f8f8f8; padding:0.5rem">{{ debug_info|tojson(indent=2) }}</pre>
+{% elif module.slug == "sensitive-data-url" %}
+  <p>Token in URL — check Referer, logs, history. <a href="{{ request.url }}">Share link</a> leaks token.</p>
+  <p><strong>Token:</strong> <code>{{ url_token }}</code></p>
+{% elif module.slug == "captcha" %}
+  <p>Simple math CAPTCHA. What is 5 + 3? (Answer can be brute-forced or replayed.)</p>
+  <form method="post">
+    <label>Answer <input name="answer" type="number"></label>
+    <button type="submit">Submit</button>
+  </form>
+  {% if captcha_correct is defined and captcha_correct %}<p style="color:green">Correct!</p>{% elif captcha_correct is defined %}<p style="color:red">Wrong.</p>{% endif %}
+{% elif module.slug == "formula-injection" %}
+  <p>Enter cell value. It is written to CSV. Try <code>=cmd|'/c calc'!A1</code> or <code>+1+1</code>.</p>
+  <form method="post">
+    <label>Cell value <input name="cell" placeholder="hello" style="width:100%"></label>
+    <button type="submit">Download CSV</button>
+  </form>
+{% elif module.slug == "crlf-injection" %}
+  <p>Redirect URL is reflected in Location header. Try injecting CRLF: <code>%0d%0aSet-Cookie: evil=1</code></p>
+  <form method="get">
+    <label>Redirect URL <input name="url" value="{{ crlf_url }}" placeholder="/" style="width:100%"></label>
+    <label>Inject header value <input name="header" placeholder="value"></label>
+    <button type="submit">Preview response</button>
+  </form>
+  {% if crlf_preview %}<pre style="background:#f8f8f8; padding:0.5rem">{{ crlf_preview }}</pre>{% endif %}
+{% elif module.slug == "web-cache" %}
+  <p>Response varies by <code>X-Forwarded-Host</code>. Cache may key on path only — poisoning possible.</p>
+  <p><strong>X-Forwarded-Host:</strong> {{ cache_host }}</p>
+  <p>Send <code>X-Forwarded-Host: evil.com</code> and observe cached response.</p>
+{% elif module.slug == "business-logic" %}
+  <p>Mock balance. Withdraw any amount — no overdraft check.</p>
+  <p><strong>Balance:</strong> ${{ balance }}</p>
+  <form method="post">
+    <label>Withdraw <input name="amount" type="number" value="50"></label>
+    <button type="submit">Withdraw</button>
+  </form>
+{% elif module.slug == "deserialization" %}
+  <p>JSON parser. In production, pickle/YAML with user input is dangerous. Try <code>{"__proto__":{"admin":true}}</code>.</p>
+  <form method="post">
+    <label>JSON <input name="json" value='{}' style="width:100%"></label>
+    <button type="submit">Deserialize</button>
+  </form>
+  {% if deser_result %}<pre style="background:#f8f8f8; padding:0.5rem">{{ deser_result }}</pre>{% endif %}
+{% elif module.slug == "request-smuggling" %}
+  <p>Raw request inspection. TE/CL mismatch causes front/back-end desync.</p>
+  <p><strong>Transfer-Encoding:</strong> {{ req_te or "(none)" }}</p>
+  <p><strong>Content-Length:</strong> {{ req_cl or "(none)" }}</p>
+{% elif module.slug == "same-origin-cors" %}
+  <p>Mock site. CORS misconfiguration allows cross-origin requests. Use browser devtools to test fetch from another origin.</p>
+  <p>Check <code>Access-Control-Allow-Origin</code> in response headers.</p>
+{% elif module.slug == "csp" %}
+  <p>Page with weak CSP (<code>unsafe-inline</code>). Inline scripts execute.</p>
+  <script>console.log("CSP allows inline scripts");</script>
+  <p>Open console to see script executed.</p>
+{% elif module.slug == "websockets" %}
+  <p>Mock WebSocket handshake. Sec-WebSocket-Key is echoed. Use devtools to inspect handshake.</p>
+  <p>Concept: validate Origin, authenticate after connect.</p>
+{% elif module.slug == "prototype-pollution" %}
+  <p>JSON merge. Try <code>{"__proto__":{"isAdmin":true}}</code>.</p>
+  <form method="post">
+    <label>JSON <input name="json" value='{}' style="width:100%"></label>
+    <button type="submit">Merge</button>
+  </form>
+  {% if proto_result %}<pre style="background:#f8f8f8; padding:0.5rem">{{ proto_result }}</pre>{% endif %}
+{% elif module.slug == "html-injection" %}
+  <p>User input reflected in HTML. Try <code>?name=&lt;a href="evil.com"&gt;click&lt;/a&gt;</code></p>
+  <form method="get">
+    <label>Name <input name="name" value="{{ html_reflected }}"></label>
+    <button type="submit">Submit</button>
+  </form>
+  <p>Rendered: {{ html_reflected|safe if html_reflected else "(empty)" }}</p>
+{% elif module.slug == "network-tls" %}
+  <p>Mock TLS info. In production: testssl.sh, check ciphers, HSTS.</p>
+  <p>Concepts: TLS 1.2+, strong ciphers, valid certs.</p>
+{% elif module.slug == "scoping" %}
+  <p>Pentest scoping checklist: in-scope URLs, auth, RoE, exclusions.</p>
+  <p>Review the objective and solution for key questions to ask.</p>
+{% elif module.slug == "general-web-security" %}
+  <p>OWASP Top 10 overview. Each maps to labs in this app.</p>
+  <p>Review modules for injection, auth, XSS, IDOR, misconfig, etc.</p>
+{% elif module.slug == "behavioral" %}
+  <p>Behavioral prep: STAR stories, motivations, conflict resolution.</p>
+  <p>Use the hints and solution to structure your answers.</p>
+{% else %}
+  <p>{{ module.description }}</p>
+  <p><em>Use the steps and solution above to study this vulnerability.</em></p>
+{% endif %}
