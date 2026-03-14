@@ -30,6 +30,9 @@ Thumbs.db
 .env.development
 .env.production
 
+# Personal notes (never in image)
+notes/
+
 # Docs (optional - include if you want them in image)
 # README.md
 # SECURITY.md

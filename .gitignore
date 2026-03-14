@@ -58,3 +58,12 @@ dist/
 build/
 *.egg-info/
 *.egg
+
+# Personal / dev notes (never commit)
+notes/
+
+# Extra safety — dev-only docs
+MIGRATION.md
+TROUBLESHOOTING.md
+*.local.md
+*.draft.md

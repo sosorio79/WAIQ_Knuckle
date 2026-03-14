@@ -154,6 +154,6 @@ MIT — see [LICENSE](LICENSE).
 
 ```bash
 # Create repo on GitHub (do not initialize with README)
-git remote add origin https://github.com/<your-username>/WAIQ_Knuckle.git
+git remote add origin https://github.com/HCKNKnuckle/WAIQ_Knuckle.git
 git push -u origin main
 ```
