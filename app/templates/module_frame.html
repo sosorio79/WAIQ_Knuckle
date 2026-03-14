@@ -1,0 +1,21 @@
+{% extends "frame_base.html" %}
+{% block frame_content %}
+<div class="frame-terminal terminal-window">
+  <div class="terminal-title-bar">WAIQ_TERMINAL // {{ module.title }}</div>
+  <div class="lab-app-panel terminal-screen">
+    <div class="terminal-prompt">root@waiq:~$ ./run_lab --module={{ module.slug }}</div>
+    <div class="frame-app-body" style="padding: 0 20px 20px;">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul style="margin: 0.5rem 0;">
+            {% for category, message in messages %}
+              <li><strong>{{ category }}:</strong> {{ message|safe }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+      {% include "_module_app_content.html" %}
+    </div>
+  </div>
+</div>
+{% endblock %}

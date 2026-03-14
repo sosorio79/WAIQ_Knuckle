@@ -9,5 +9,6 @@ def get_settings():
         "DB_PATH": os.environ.get(
             "APP_DB_PATH", str(base_dir.parent / "data" / "app.db")
         ),
+        "PORT": int(os.environ.get("APP_PORT", "5000")),
     }
 

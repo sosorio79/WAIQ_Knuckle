@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="12" fill="#0d100d"/>
+  <circle cx="64" cy="42" r="18" fill="none" stroke="#33ee33" stroke-width="2"/>
+  <path d="M40 95 Q40 70 64 70 Q88 70 88 95" fill="none" stroke="#33ee33" stroke-width="2"/>
+  <rect x="20" y="35" width="28" height="28" rx="4" fill="#39ff14" opacity="0.6"/>
+  <text x="34" y="55" font-size="16" fill="#39ff14" text-anchor="middle">ID</text>
+</svg>

@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WAIQ Knuckle</title>
   <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/theme-cyberpunk.css') }}">
+  {% block head %}{% endblock %}
 </head>
 <body>
   <header>
@@ -11,7 +14,7 @@
     <p><em>“Hack the Planet.” — training edition</em></p>
     <nav>
       <a href="{{ url_for('index') }}">Home</a>
-      <a href="{{ url_for('list_modules') }}">Modules</a>
+      <a href="{{ url_for('list_modules') }}">Labs</a>
     </nav>
   </header>
 
@@ -29,8 +32,10 @@
     {% block content %}{% endblock %}
   </main>
   <footer>
-    <small>Built for AppSec practice. Zero cool, acid burn, and you.</small>
+    <small>Built for AppSec practice. Zero cool, acid burn, and you. Stack: Python (Flask) + TypeScript + Go</small>
   </footer>
+  <div id="ts-status" hidden class="status"></div>
+  <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
 

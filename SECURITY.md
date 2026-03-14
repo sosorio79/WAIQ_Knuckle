@@ -2,7 +2,7 @@
 
 ## This Application is Intentionally Vulnerable
 
-**WAIQ_Portal** is a **vulnerable web application** designed for security training and educational purposes.
+**WAIQ_Knuckle** is a **vulnerable web application** designed for security training and educational purposes.
 
 ### ⚠️ DO NOT USE IN PRODUCTION
 

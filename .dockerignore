@@ -1,0 +1,35 @@
+# Git
+.git
+.gitignore
+
+# Python
+venv/
+env/
+.venv
+__pycache__/
+*.pyc
+*.pyo
+
+# Node
+node_modules/
+
+# Local data
+data/
+*.db
+*.sqlite
+
+# IDE & OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Env files (keep .env.example for reference; use docker-compose for runtime)
+.env
+.env.local
+.env.development
+.env.production
+
+# Docs (optional - include if you want them in image)
+# README.md
+# SECURITY.md

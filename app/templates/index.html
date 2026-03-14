@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
   <h2>Welcome</h2>
-  <p>This is WAIQ Knuckle — a deliberately vulnerable training app inspired by “Hack the Planet.”</p>
-  <p>Head to the modules list to pick a vuln lab and start breaking things (safely).</p>
-  <a href="{{ url_for('list_modules') }}">View Modules</a>
+  <p>WAIQ Knuckle — hands-on AppSec labs inspired by real interview questions. Learn by exploiting deliberately vulnerable apps in a Fallout-style terminal.</p>
+  <p>Each lab has an <strong>objective</strong>, step-by-step <strong>walkthrough</strong>, <strong>hints</strong>, and a <strong>solution</strong> — plus a vulnerable demo to practice on.</p>
+  <p><a href="{{ url_for('list_modules') }}" class="cta">Browse Labs →</a></p>
 {% endblock %}
 
